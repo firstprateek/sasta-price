@@ -1,0 +1,60 @@
+
+[1mFrom:[0m /home/padi/Projects/sasta-price/lib/sasta_price/processor.rb @ line 78 SastaPrice::Processor.sanitize_response:
+
+    [1;34m70[0m: [32mdef[0m [1;36mself[0m.[1;34msanitize_response[0m(response, product)
+    [1;34m71[0m: 	words = product.split
+    [1;34m72[0m: 	[32mif[0m words.count < [1;34m1[0m
+    [1;34m73[0m: 		response = [1;36mnil[0m
+    [1;34m74[0m: 	[32melsif[0m words.count == [1;34m1[0m
+    [1;34m75[0m: 		response.reject! { |res| res[[33m:title[0m].downcase.match(product).nil? }
+    [1;34m76[0m: 	[32melse[0m 
+    [1;34m77[0m: 		match_ratio = (words.count/[1;35m2.0[0m).ceil
+ => [1;34m78[0m: 		binding.pry
+    [1;34m79[0m: 		response.select! [32mdo[0m |res|
+    [1;34m80[0m: 			value = [1;36mnil[0m
+    [1;34m81[0m: 			words.each_cons(match_ratio) [32mdo[0m |cons_word|
+    [1;34m82[0m: 				match_string = cons_word.join([31m[1;31m'[0m[31m.*[1;31m'[0m[31m[0m) + [31m[1;31m"[0m[31m|[1;31m"[0m[31m[0m + cons_word.reverse.join([31m[1;31m'[0m[31m.*[1;31m'[0m[31m[0m)
+    [1;34m83[0m: 				[32mif[0m res[[33m:title[0m].downcase.match(match_string).present?
+    [1;34m84[0m: 					value = [1;36mtrue[0m 
+    [1;34m85[0m: 					[32mbreak[0m
+    [1;34m86[0m: 				[32mend[0m
+    [1;34m87[0m: 			[32mend[0m
+    [1;34m88[0m: 			puts [31m[1;31m"[0m[31m#{res[:title]}[0m[31m[1;31m"[0m[31m[0m [32munless[0m value
+    [1;34m89[0m: 			value
+    [1;34m90[0m: 		[32mend[0m
+    [1;34m91[0m: 	[32mend[0m
+    [1;34m92[0m: 
+    [1;34m93[0m: 	response = remove_big_deviants(response, response.first[[33m:amount[0m])
+    [1;34m94[0m: 	response.sort! { |a,b| a[[33m:amount[0m] <=> b[[33m:amount[0m]} [32mif[0m response.present?
+    [1;34m95[0m: [32mend[0m
+
+
+[1mFrom:[0m /home/padi/Projects/sasta-price/lib/sasta_price/processor.rb @ line 78 SastaPrice::Processor.sanitize_response:
+
+    [1;34m70[0m: [32mdef[0m [1;36mself[0m.[1;34msanitize_response[0m(response, product)
+    [1;34m71[0m: 	words = product.split
+    [1;34m72[0m: 	[32mif[0m words.count < [1;34m1[0m
+    [1;34m73[0m: 		response = [1;36mnil[0m
+    [1;34m74[0m: 	[32melsif[0m words.count == [1;34m1[0m
+    [1;34m75[0m: 		response.reject! { |res| res[[33m:title[0m].downcase.match(product).nil? }
+    [1;34m76[0m: 	[32melse[0m 
+    [1;34m77[0m: 		match_ratio = (words.count/[1;35m2.0[0m).ceil
+ => [1;34m78[0m: 		binding.pry
+    [1;34m79[0m: 		response.select! [32mdo[0m |res|
+    [1;34m80[0m: 			value = [1;36mnil[0m
+    [1;34m81[0m: 			words.each_cons(match_ratio) [32mdo[0m |cons_word|
+    [1;34m82[0m: 				match_string = cons_word.join([31m[1;31m'[0m[31m.*[1;31m'[0m[31m[0m) + [31m[1;31m"[0m[31m|[1;31m"[0m[31m[0m + cons_word.reverse.join([31m[1;31m'[0m[31m.*[1;31m'[0m[31m[0m)
+    [1;34m83[0m: 				[32mif[0m res[[33m:title[0m].downcase.match(match_string).present?
+    [1;34m84[0m: 					value = [1;36mtrue[0m 
+    [1;34m85[0m: 					[32mbreak[0m
+    [1;34m86[0m: 				[32mend[0m
+    [1;34m87[0m: 			[32mend[0m
+    [1;34m88[0m: 			puts [31m[1;31m"[0m[31m#{res[:title]}[0m[31m[1;31m"[0m[31m[0m [32munless[0m value
+    [1;34m89[0m: 			value
+    [1;34m90[0m: 		[32mend[0m
+    [1;34m91[0m: 	[32mend[0m
+    [1;34m92[0m: 
+    [1;34m93[0m: 	response = remove_big_deviants(response, response.first[[33m:amount[0m])
+    [1;34m94[0m: 	response.sort! { |a,b| a[[33m:amount[0m] <=> b[[33m:amount[0m]} [32mif[0m response.present?
+    [1;34m95[0m: [32mend[0m
+
