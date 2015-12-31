@@ -27,8 +27,6 @@ gem	'slim-rails'
 gem 'awesome_print', require: 'ap'
 gem 'simple_form'
 gem 'pry'
-gem 'rails_12factor', group: :production
-
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -57,4 +55,8 @@ group :development do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+end
+
+group :production do
+ gem 'rails_12factor'
 end
