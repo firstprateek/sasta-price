@@ -15,7 +15,7 @@ module SastaPrice
 	      amount = price[/[0-9\,]+/].gsub(',','').to_i
 	      puts"#{title} #{price}"
 	      append_link = item.at_css('.fk-display-block')[:href] # append http://www.flipkart.com/
-	    	link = "http://www.flipkart.com#{append_link}"	
+	    	link = "http://www.flipkart.com#{append_link}"
 				response << {title: title, price: price, vendor: "flipkart", link: link, amount: amount}
 	    end
 
