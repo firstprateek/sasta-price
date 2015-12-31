@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20151123182509) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "products", force: :cascade do |t|
     t.string   "title"
     t.string   "price"
@@ -20,13 +23,6 @@ ActiveRecord::Schema.define(version: 20151123182509) do
     t.datetime "updated_at", null: false
     t.string   "link"
     t.string   "vendor"
-  end
-
-  create_table "todos", force: :cascade do |t|
-    t.string   "title"
-    t.text     "notes"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
 end
