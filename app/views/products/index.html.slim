@@ -1,19 +1,25 @@
-.navbar.navbar-fixed-top
-  .navbar-header
-    p.navbar-brand Sasta Price
-.center-container
-  .form-container.jumbotron
-    h1 Search For a Product
-    br/
+.container
+  .header.clearfix
+    nav
+      ul.nav.nav-pills.pull-right
+        li.active role="presentation"
+          a href="#"  Home
+        li role="presentation"
+          a href="#"  About
+        li role="presentation"
+          a href="#"  Contact
+    h3.text-muted Sasta Price
+  .jumbotron
+    h1 Sasta Price
+    p.lead Get the most Sasta and relevant price (with links) of your product.
+    p
+      = simple_form_for '', url: search_path, html: { class: 'form form-inline' } do |f|
+        = f.input_field :search, placeholder: 'Product', class: 'form-control'
+        = f.submit 'Submit!', class: 'btn btn-primary submit-button', data: { disable_with: 'Submitting...' }
 
-    = simple_form_for '', url: search_path, html: { class: 'form-search' } do |f|
-      = f.input_field :search, placeholder: 'Product', html: { class: 'input-medium search-query' }
-      = f.submit 'Submit!', class: 'btn btn-default', data: { disable_with: 'Submitting...' }
-
-  br/
   - if @response.present?
     .table-container
-      table.table-striped
+      table.table-striped.wide-table
         thead
           tr
             th Number
@@ -25,7 +31,9 @@
           - @response.each do |response|
               tr
                 td = "#{@counter +=1}."
-                td = link_to("#{response[:title]}", "#{response[:link]}")
+                td = link_to "#{response[:title]}", "#{response[:link]}", target: '_blank'
                 td = "Rs. #{response[:amount]}"
                 td = response[:vendor]
   br/
+  footer.footer
+    p © 2016 Padi, Inc.
