@@ -1,0 +1,84 @@
+$bgDefault       : #e74c3c;
+$bgHighlight    : #c0392b;
+$colDefault     : #ecf0f1;
+$colHover       : #ffbbbc;
+
+.center-container {
+  width: 100%;
+  text-align: center;
+  position: fixed;
+  top: 50px;
+}
+
+.form-container {
+  margin: 0 auto;
+  text-align: center;
+  width: 60%;
+}
+
+.table-container {
+  text-align: center;
+  width: 100%;
+}
+
+// .navbar {
+//   background-color: $sastaRed;
+//   border-color: $bgHighlight;
+//   .navbar-brand {
+//       color: $colDefault;
+//       &:hover, &:focus {
+//         color: $colHover;
+//       }
+//     }
+//   }
+
+.navbar-brand {
+  margin-bottom: 0px;
+}
+
+.navbar {
+    background-color: $bgDefault;
+    border-color: $bgHighlight;
+    .navbar-brand {
+        color: $colDefault;
+        &:hover, &:focus {
+            color: $colHover; }}
+    .navbar-nav {
+        > li {
+            > a {
+                color: $colDefault;
+                &:hover, &:focus {
+                    color: $colHover;   }}}
+        .active {
+            > a, > a:hover, > a:focus {
+                color: $colHover;
+                background-color: $bgHighlight; }}
+        .open {
+            > a, > a:hover, > a:focus {
+                color: $colHover;
+                background-color: $bgHighlight;
+                .caret {
+                    border-top-color: $colHover;
+                    border-bottom-color: $colHover; }}}
+        > .dropdown {
+            > a {
+                .caret {
+                    border-top-color: $colDefault;
+                    border-bottom-color: $colDefault; }
+                &:hover, &:focus {
+                    .caret {
+                        border-top-color: $colHover;
+                        border-bottom-color: $colHover; }}}}}
+    .navbar-toggle {
+        border-color: $bgHighlight;
+        &:hover, &:focus {
+            background-color: $bgHighlight; }
+        .icon-bar {
+            background-color: $colDefault; }}}
+@media (max-width: 767px) {
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+        color: $colDefault;
+        &:hover, &:focus {
+            color: $colHover;
+            background-color: $bgHighlight; }}
+}

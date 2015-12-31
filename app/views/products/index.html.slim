@@ -1,31 +1,31 @@
-p#notice= notice
-h1 Listing Products
-br/
+.navbar.navbar-fixed-top
+  .navbar-header
+    p.navbar-brand Sasta Price
+.center-container
+  .form-container.jumbotron
+    h1 Search For a Product
+    br/
 
-/ form.form-inline role="form" 
-/   .form-group
-/     input.form-control placeholder=("Enter email") type="email" /
-/   button.btn.btn-default type="submit"  Search
+    = simple_form_for '', url: search_path, html: { class: 'form-search' } do |f|
+      = f.input_field :search, placeholder: 'Product', html: { class: 'input-medium search-query' }
+      = f.submit 'Submit!', class: 'btn btn-default', data: { disable_with: 'Submitting...' }
 
-= simple_form_for '', url: search_path, html: { class: 'form-search' } do |f|
-  = f.input_field :search, placeholder: 'Product', html: { class: 'input-medium search-query' }
-  = f.submit 'Submit!', class: 'btn btn-default', data: { disable_with: 'Submitting...' }
-
-br/
-- if @response.present?
-  table.table-striped
-    thead
-      tr
-        th Number
-        th Title
-        th Price
-        th Vendor
-    tbody
-      - @counter = 0
-      - @response.each do |response|
+  br/
+  - if @response.present?
+    .table-container
+      table.table-striped
+        thead
           tr
-            td = "#{@counter +=1}."
-            td = link_to("#{response[:title]}", "#{response[:link]}")
-            td = "Rs. #{response[:amount]}"
-            td = response[:vendor]
-br/ 
+            th Number
+            th Title
+            th Price
+            th Vendor
+        tbody
+          - @counter = 0
+          - @response.each do |response|
+              tr
+                td = "#{@counter +=1}."
+                td = link_to("#{response[:title]}", "#{response[:link]}")
+                td = "Rs. #{response[:amount]}"
+                td = response[:vendor]
+  br/
