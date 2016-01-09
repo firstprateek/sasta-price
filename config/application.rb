@@ -26,5 +26,8 @@ module SastaPrice
 
     # Heroku requires this to be false
     config.assets.initialize_on_precompile=false
+    ## Newly Added code to set up the api code
+    config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
+    config.autoload_paths += Dir[Rails.root.join('app', 'api', '*')]
   end
 end

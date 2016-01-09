@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount API => '/'
   resources :products
   root 'products#index'
   post 'search', to: 'products#search'
