@@ -19,6 +19,7 @@ gem 'coffee-rails', '~> 4.1.0'
 # gem 'therubyracer', platforms: :ruby
 
 #stack
+gem 'foreman'
 gem 'puma'
 gem "heroku"
 gem 'nokogiri'
