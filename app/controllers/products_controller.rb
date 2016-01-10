@@ -6,7 +6,9 @@ class ProductsController < ApplicationController
   def index
   end
 
-
+  def about
+  end
+  
   def search
     @response = SastaPrice::Processor.process(params[:search])
     render action: 'index'
