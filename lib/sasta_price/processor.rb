@@ -2,8 +2,8 @@ module SastaPrice
 	class Processor
 		def self.process(product)
 			response = []
+			#flipkart doc.css("[data-aid^='product_title_']")
 
-			#flipkart
 			url = "http://www.flipkart.com/search?q=#{CGI.escape(product)}&as=off&as-show=off&otracker=start"
 	    doc = Nokogiri::HTML(HTTParty.get(url).body)
 	    doc.css('#products .lastUnit').each do |item|
@@ -23,14 +23,14 @@ module SastaPrice
 	    url = "http://www.snapdeal.com/search?keyword=#{CGI.escape(product)}&santizedKeyword=&catId=&categoryId=&suggested=false&vertical=&noOfResults=20&clickSrc=go_header&lastKeyword=&prodCatId=&changeBackToAll=false&foundInAll=false&categoryIdSearched=&cityPageUrl=&url=&utmContent=&dealDetail="
 	    doc = Nokogiri::HTML(HTTParty.get(url).body)
 
-	    doc.css('.product-txtWrapper').each do |item|
+			doc.css('.js-tuple').each do |item|
 	      puts "inside"
-	      next if item.at_css('#price').nil? || item.at_css('.product-title').nil?
+	      next if item.at_css('.product-price').nil? || item.at_css('.product-title').nil?
 	      title = item.at_css('.product-title').text.strip
-	      price = item.at_css('#price').text[/[rR][sS][0-9\.\,\s]+/]
+	      price = item.at_css('.product-price').text[/[rR][sS][0-9\.\,\s]+/]
 	      next if price.blank?
 	      amount = price[/[0-9]+/].to_i
-	      puts"#{title} #{price}"
+	      puts "#{title} #{price}"
 	      link = item.at_css('a')[:href]
 	    	response << {title: title, price: price, vendor: "snapdeal", link: link, amount: amount}
 	    end
