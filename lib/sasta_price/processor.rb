@@ -13,6 +13,7 @@ module SastaPrice
 	      price = item.at_css('.pu-final .fk-bold').text[/[rR][sS][0-9\.\,\s]+/]
 	      next if price.blank?
 	      amount = price[/[0-9\,]+/].gsub(',','').to_i
+				next if amount.blank?
 	      puts"#{title} #{price}"
 	      append_link = item.at_css('.fk-display-block')[:href] # append http://www.flipkart.com/
 	    	link = "http://www.flipkart.com#{append_link}"
@@ -30,6 +31,7 @@ module SastaPrice
 	      price = item.at_css('.product-price').text[/[rR][sS][0-9\.\,\s]+/]
 	      next if price.blank?
 	      amount = price[/[0-9]+/].to_i
+				next if amount.blank?
 	      puts "#{title} #{price}"
 	      link = item.at_css('a')[:href]
 	    	response << {title: title, price: price, vendor: "snapdeal", link: link, amount: amount}
@@ -46,6 +48,7 @@ module SastaPrice
 	      price = item.at_css('.prc .bold').text[/[rR][sS][0-9\.\,\s]+/]
 	      next if price.blank?
 	      amount = price[/[0-9\,]+/].gsub(',','').to_i
+				next if amount.blank?
 	      puts"#{title} #{price}"
 	      link = item.at_css('.vip')[:href]
 	    	response << {title: title, price: price, vendor: "ebay", link: link, amount: amount}
@@ -62,6 +65,7 @@ module SastaPrice
 	      price = item.at_css('.a-text-bold').text[/[0-9\.\,]+/]
 	      next if price.nil?
 	      amount = price[/[0-9\,]+/].gsub(',','').to_i
+				next if amount.blank?
 	      puts"#{title} #{price}"
 	      link = item.at_css('a')[:href]
 	    	response << {title: title, price: price, vendor: "amazon", link: link, amount: amount}
