@@ -1,5 +1,5 @@
 .container
-  .col-md-8.col-md-offset-2
+  .col-md-10.col-md-offset-1
     .header.clearfix
       nav
         ul.nav.nav-pills.pull-right
@@ -10,7 +10,7 @@
       h3.text-muted Sasta Price
     .jumbotron
       h1 Sasta Price
-      p.lead Get the most Sasta and relevant price (with links) of your product.
+      p.lead Get the most Sasta (cheap) and relevant price (with links) of your product.
       p
         = simple_form_for '', url: search_path, html: { class: 'form form-inline' } do |f|
           = f.input_field :search, placeholder: 'Product', class: 'form-control'

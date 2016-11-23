@@ -4,71 +4,79 @@ module SastaPrice
 			response = []
 			#flipkart doc.css("[data-aid^='product_title_']")
 
-			url = "http://www.flipkart.com/search?q=#{CGI.escape(product)}&as=off&as-show=off&otracker=start"
-	    doc = Nokogiri::HTML(HTTParty.get(url).body)
-	    doc.css('#products .lastUnit').each do |item|
-	      puts "inside"
-	      next if item.at_css('.fk-display-block').blank? || item.at_css('.pu-final .fk-bold').blank?
-	      title = item.at_css('.fk-display-block').text.strip
-	      price = item.at_css('.pu-final .fk-bold').text[/[rR][sS][0-9\.\,\s]+/]
-	      next if price.blank?
-	      amount = price[/[0-9\,]+/].gsub(',','').to_i
+			# url_flip = "http://www.flipkart.com/search?q=#{CGI.escape(product)}&as=off&as-show=off&otracker=start"
+	    # doc_flip = Nokogiri::HTML(HTTParty.get(url_flip).body)
+	    # doc_flip.css('#products .lastUnit').each do |item|
+	    #   puts "inside"
+	    #   next if item.at_css('.fk-display-block').blank? || item.at_css('.pu-final .fk-bold').blank?
+	    #   title = item.at_css('.fk-display-block').text.strip
+	    #   price = item.at_css('.pu-final .fk-bold').text[/[rR][sS][0-9\.\,\s]+/]
+	    #   next if price.blank?
+	    #   amount = price[/[0-9\,]+/].gsub(',','').to_i
+			# 	next if amount.blank?
+	    #   puts"#{title} #{price}"
+	    #   append_link = item.at_css('.fk-display-block')[:href] # append http://www.flipkart.com/
+	    # 	link = "http://www.flipkart.com#{append_link}"
+			# 	response << { title: title, price: price, vendor: "flipkart", link: link, amount: amount }
+	    # end
+
+			#amazon
+	    url_amaz = "http://www.amazon.in/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=#{CGI.escape(product)}"
+
+			doc_amaz = []
+			attempt = 1
+			while (attempt <= 100) #MAX_ATTEMPTS_FOR_AMAZON
+				puts "attempt #{attempt}"
+				doc_amaz = Nokogiri::HTML(HTTParty.get(url_amaz).body)
+				puts "doc_amaz.css('.s-item-container')[0].try(:text).nil? : #{doc_amaz.css('.s-item-container')[0].try(:text).nil?}"
+				doc_amaz.css('.s-item-container')[0].try(:text).nil? ? attempt += 1 : break
+			end
+
+			doc_amaz.css('.s-item-container').each do |item|
+	      # puts "inside amazon"
+	      next if item.at_css('.s-access-title').nil? || item.at_css('.a-text-bold').nil?
+	      title = item.at_css('.s-access-title').text.strip
+	      price = item.at_css('.a-text-bold').text[/[0-9\.\,]+/]
+				next if price.nil?
+	      amount = price[/[0-9,]+/].delete(',').to_i
 				next if amount.blank?
-	      puts"#{title} #{price}"
-	      append_link = item.at_css('.fk-display-block')[:href] # append http://www.flipkart.com/
-	    	link = "http://www.flipkart.com#{append_link}"
-				response << {title: title, price: price, vendor: "flipkart", link: link, amount: amount}
+	      # puts "#{title} --#{price}--#{amount}"
+	      link = item.at_css('a')[:href]
+	    	response << { title: title, price: price, vendor: "amazon", link: link, amount: amount }
 	    end
 
 	    #snapdeal http://www.snapdeal.com/search?keyword=samsung+galaxy+s6&santizedKeyword=moto+g&catId=&categoryId=&suggested=false&vertical=p&noOfResults=20&clickSrc=go_header&lastKeyword=moto+g&prodCatId=&changeBackToAll=false&foundInAll=false&categoryIdSearched=&cityPageUrl=&url=&utmContent=&dealDetail=
-	    url = "http://www.snapdeal.com/search?keyword=#{CGI.escape(product)}&santizedKeyword=&catId=&categoryId=&suggested=false&vertical=&noOfResults=20&clickSrc=go_header&lastKeyword=&prodCatId=&changeBackToAll=false&foundInAll=false&categoryIdSearched=&cityPageUrl=&url=&utmContent=&dealDetail="
-	    doc = Nokogiri::HTML(HTTParty.get(url).body)
+	    url_snap = "http://www.snapdeal.com/search?keyword=#{CGI.escape(product)}&santizedKeyword=&catId=&categoryId=&suggested=false&vertical=&noOfResults=20&clickSrc=go_header&lastKeyword=&prodCatId=&changeBackToAll=false&foundInAll=false&categoryIdSearched=&cityPageUrl=&url=&utmContent=&dealDetail="
+	    doc_snap = Nokogiri::HTML(HTTParty.get(url_snap).body)
 
-			doc.css('.js-tuple').each do |item|
-	      puts "inside"
+			doc_snap.css('.js-tuple').each do |item|
+	      # puts "inside snapdeal"
 	      next if item.at_css('.product-price').nil? || item.at_css('.product-title').nil?
 	      title = item.at_css('.product-title').text.strip
 	      price = item.at_css('.product-price').text[/[rR][sS][0-9\.\,\s]+/]
 	      next if price.blank?
-	      amount = price[/[0-9]+/].to_i
+	      amount = price[/[0-9,]+/].delete(',').to_i
 				next if amount.blank?
-	      puts "#{title} #{price}"
+	      # puts "#{title} #{price}"
 	      link = item.at_css('a')[:href]
-	    	response << {title: title, price: price, vendor: "snapdeal", link: link, amount: amount}
+	    	response << { title: title, price: price, vendor: "snapdeal", link: link, amount: amount }
 	    end
 
 	    #ebay
-	    url = "http://www.ebay.in/sch/i.html?_from=R40&_trksid=p2050601.m570.l1313.TR0.TRC0.H0.X#{CGI.escape(product)}.TRS0&_nkw=#{CGI.escape(product)}&_sacat=0"
-	    doc = Nokogiri::HTML(HTTParty.get(url).body)
+	    url_ebay = "http://www.ebay.in/sch/i.html?_from=R40&_trksid=p2050601.m570.l1313.TR0.TRC0.H0.X#{CGI.escape(product)}.TRS0&_nkw=#{CGI.escape(product)}&_sacat=0"
+	    doc_ebay = Nokogiri::HTML(HTTParty.get(url_ebay).body)
 
-	    doc.css('.li').each do |item|
-	      puts "inside"
+	    doc_ebay.css('.li').each do |item|
+	      # puts "inside ebay"
 	      next if item.at_css('.vip').nil? || item.at_css('.prc .bold').nil?
 	      title = item.at_css('.vip').text.strip
 	      price = item.at_css('.prc .bold').text[/[rR][sS][0-9\.\,\s]+/]
 	      next if price.blank?
-	      amount = price[/[0-9\,]+/].gsub(',','').to_i
+	      amount = price[/[0-9,]+/].delete(',').to_i
 				next if amount.blank?
-	      puts"#{title} #{price}"
+	      # puts"#{title} #{price}"
 	      link = item.at_css('.vip')[:href]
-	    	response << {title: title, price: price, vendor: "ebay", link: link, amount: amount}
-	    end
-
-	    #amazon
-	    url = "http://www.amazon.in/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=#{CGI.escape(product)}"
-	    doc = Nokogiri::HTML(HTTParty.get(url).body)
-
-	    doc.css('.s-item-container').each do |item|
-	      puts "inside"
-	      next if item.at_css('.s-access-title').nil? || item.at_css('.a-text-bold').nil?
-	      title = item.at_css('.s-access-title').text.strip
-	      price = item.at_css('.a-text-bold').text[/[0-9\.\,]+/]
-	      next if price.nil?
-	      amount = price[/[0-9\,]+/].gsub(',','').to_i
-				next if amount.blank?
-	      puts"#{title} #{price}"
-	      link = item.at_css('a')[:href]
-	    	response << {title: title, price: price, vendor: "amazon", link: link, amount: amount}
+	    	response << { title: title, price: price, vendor: "ebay", link: link, amount: amount }
 	    end
 
 	    response = sanitize_response(response, product)
@@ -91,7 +99,7 @@ module SastaPrice
 	  					break
 	  				end
 	  			end
-	  			puts "#{res[:title]}" unless value
+	  			# puts "#{res[:title]}" unless value
 	  			value
 	  		end
 	  	end
